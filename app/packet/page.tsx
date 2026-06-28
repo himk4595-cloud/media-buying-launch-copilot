@@ -67,22 +67,25 @@ export default function LaunchPacketPage() {
     alert("Export payload copied.");
   }
 
-  function downloadJson() {
-    const blob = new Blob([JSON.stringify(packet, null, 2)], {
-      type: "application/json",
-    });
+function downloadJson() {
+  if (!packet) return;
 
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+  const blob = new Blob([JSON.stringify(packet, null, 2)], {
+    type: "application/json",
+  });
 
-    link.href = url;
-    link.download = `${packet.campaignName}-launch-packet.json`;
-    link.click();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
-    URL.revokeObjectURL(url);
-  }
+  link.href = url;
+  link.download = `${packet.campaignName}-launch-packet.json`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 
   function downloadCsv() {
+    if (!packet) return;
     const rows = [
       ["Field", "Value"],
       ["Campaign Name", packet.campaignName],
