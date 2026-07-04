@@ -275,8 +275,6 @@ npm run build
 |---|---|
 | `GROQ_API_KEY` | Server-side key used by the launch packet generation route |
 
-Never commit `.env.local` or API keys to GitHub.
-
 ## Demo walkthrough
 
 1. Open the dashboard.
