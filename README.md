@@ -6,7 +6,7 @@ The app turns a campaign brief into a structured launch packet with campaign nam
 
 ## Live Demo
 
-- Live app: **[https://media-buying-launch-copilot.vercel.app/packet]**
+- Live app: **[https://media-buying-launch-copilot.vercel.app]**
 - GitHub repository: https://github.com/himk4595-cloud/media-buying-launch-copilot
 
 ## What does this tool do?
