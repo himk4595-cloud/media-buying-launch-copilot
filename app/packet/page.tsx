@@ -61,6 +61,7 @@ export default function LaunchPacketPage() {
   }
 
   const exportJson = JSON.stringify(packet.exportPayload, null, 2);
+  const activePacket = packet;
 
   function copyExportPayload() {
     navigator.clipboard.writeText(exportJson);
@@ -68,9 +69,11 @@ export default function LaunchPacketPage() {
   }
 
 function downloadJson() {
-  if (!packet) return;
+  const currentPacket = activePacket;
 
-  const blob = new Blob([JSON.stringify(packet, null, 2)], {
+  if (!currentPacket) return;
+
+  const blob = new Blob([JSON.stringify(currentPacket, null, 2)], {
     type: "application/json",
   });
 
@@ -78,49 +81,52 @@ function downloadJson() {
   const link = document.createElement("a");
 
   link.href = url;
-  link.download = `${packet.campaignName}-launch-packet.json`;
+  link.download = `${currentPacket.campaignName}-launch-packet.json`;
   link.click();
 
   URL.revokeObjectURL(url);
 }
 
   function downloadCsv() {
-    if (!packet) return;
-    const rows = [
-      ["Field", "Value"],
-      ["Campaign Name", packet.campaignName],
-      ["Platform", packet.brief.platform],
-      ["Offer Name", packet.brief.offerName],
-      ["Target Audience", packet.brief.targetAudience],
-      ["Pain Point", packet.brief.painPoint],
-      ["Desired Action", packet.brief.desiredAction],
-      ["Daily Budget", packet.brief.dailyBudget],
-      ["Landing Page URL", packet.brief.landingPageUrl],
-      ["Campaign Objective", packet.brief.campaignObjective],
-      ["Landing Page Hook", packet.landingPageHook],
-      ["Headlines", packet.headlines.join(" | ")],
-      ["Primary Text", packet.primaryText.join(" | ")],
-      ["UTM Links", packet.utmLinks.join(" | ")],
-    ];
+  const currentPacket = activePacket;
 
-    const csv = rows
-      .map((row) =>
-        row
-          .map((cell) => `"${String(cell).replaceAll('"', '""')}"`)
-          .join(","),
-      )
-      .join("\n");
+  if (!currentPacket) return;
 
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+  const rows = [
+    ["Field", "Value"],
+    ["Campaign Name", currentPacket.campaignName],
+    ["Platform", currentPacket.brief.platform],
+    ["Offer Name", currentPacket.brief.offerName],
+    ["Target Audience", currentPacket.brief.targetAudience],
+    ["Pain Point", currentPacket.brief.painPoint],
+    ["Desired Action", currentPacket.brief.desiredAction],
+    ["Daily Budget", currentPacket.brief.dailyBudget],
+    ["Landing Page URL", currentPacket.brief.landingPageUrl],
+    ["Campaign Objective", currentPacket.brief.campaignObjective],
+    ["Landing Page Hook", currentPacket.landingPageHook],
+    ["Headlines", currentPacket.headlines.join(" | ")],
+    ["Primary Text", currentPacket.primaryText.join(" | ")],
+    ["UTM Links", currentPacket.utmLinks.join(" | ")],
+  ];
 
-    link.href = url;
-    link.download = `${packet.campaignName}-launch-packet.csv`;
-    link.click();
+  const csv = rows
+    .map((row) =>
+      row
+        .map((cell) => `"${String(cell).replaceAll('"', '""')}"`)
+        .join(","),
+    )
+    .join("\n");
 
-    URL.revokeObjectURL(url);
-  }
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = `${currentPacket.campaignName}-launch-packet.csv`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
